@@ -7,20 +7,26 @@ import { Jobs } from './Jobs'
 type MenuItemProps = {
   status: Status
   count: number
-  onClick: () => void
+  queue: AppQueue
+  selectStatus: (statuses: Record<string, Status>) => void
   selected: boolean
 }
 
-const MenuItem = ({ status, count, onClick, selected }: MenuItemProps) => (
+const MenuItem = ({ status, count, selectStatus, selected, queue }: MenuItemProps) => {
+  // If the current status is already selected, it will close the tab
+  const selectedStatus = selected ? {} : { [queue.name]: status };
+
+  return (
   <div
     className={`menu-item ${status} ${selected ? 'selected' : ''} ${
       count === 0 ? 'off' : 'on'
     }`}
-    onClick={onClick}
+    onClick={() => selectStatus(selectedStatus)}
   >
     {status !== 'latest' && <b className="count">{count}</b>} {status}
   </div>
 )
+}
 const ACTIONABLE_STATUSES = ['failed', 'delayed', 'completed']
 
 interface QueueActionProps {
@@ -81,6 +87,7 @@ interface QueueProps {
   cleanAllCompleted: () => Promise<void>
   retryAll: () => Promise<void>
   retryJob: (job: AppJob) => () => Promise<void>
+  cleanJob: (job: AppJob) => () => Promise<void>
   promoteJob: (job: AppJob) => () => Promise<void>
 }
 
@@ -95,6 +102,7 @@ export const Queue = ({
   queue,
   retryAll,
   retryJob,
+  cleanJob,
   promoteJob,
   selectedStatus,
   selectStatus,
@@ -107,7 +115,8 @@ export const Queue = ({
           key={`${queue.name}-${status}`}
           status={status}
           count={queue.counts[status]}
-          onClick={() => selectStatus({ [queue.name]: status })}
+          selectStatus={selectStatus}
+          queue={queue}
           selected={selectedStatus === status}
         />
       ))}
@@ -124,6 +133,7 @@ export const Queue = ({
         />
         <Jobs
           retryJob={retryJob}
+          cleanJob={cleanJob}
           promoteJob={promoteJob}
           queue={queue}
           status={selectedStatus}

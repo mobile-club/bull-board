@@ -11,11 +11,31 @@ import { Timestamp } from './Timestamp'
 type FieldProps = {
   job: AppJob
   retryJob: () => Promise<void>
+  cleanJob: () => Promise<void>
   delayedJob: () => Promise<void>
 }
 
 const fieldComponents: Record<Field, React.FC<FieldProps>> = {
-  id: ({ job }) => <b>#{job.id}</b>,
+  id: ({ job }) => {
+    const displayTruncate = job.id && String(job.id).length > 10
+    const truncatedId = String(job.id).slice(0, 0)
+    const [showId, toggleId] = useState(false)
+
+    return (
+      <>
+        {displayTruncate ? (
+          <>
+            <button onClick={() => toggleId(!showId)}>Show full id</button>
+            <div style={{ fontWeight: 'bold' }}>
+              {showId ? job.id : truncatedId}
+            </div>
+          </>
+        ) : (
+          <b>{job.id}</b>
+        )}
+      </>
+    )
+  },
 
   timestamps: ({ job }) => (
     <div className="timestamps">
@@ -107,6 +127,8 @@ const fieldComponents: Record<Field, React.FC<FieldProps>> = {
 
   retry: ({ retryJob }) => <button onClick={retryJob}>Retry</button>,
 
+  clean: ({ cleanJob }) => <button onClick={cleanJob}>Clean</button>,
+
   promote: ({ delayedJob }) => <button onClick={delayedJob}>Promote</button>,
 }
 
@@ -115,11 +137,13 @@ export const Job = ({
   status,
   queueName,
   retryJob,
+  cleanJob,
   promoteJob,
 }: {
   job: AppJob
   status: Status
   queueName: string
+  cleanJob:(job: AppJob) => () => Promise<void>
   retryJob: (job: AppJob) => () => Promise<void>
   promoteJob: (job: AppJob) => () => Promise<void>
 }) => {
@@ -133,6 +157,7 @@ export const Job = ({
             <Field
               job={job}
               retryJob={retryJob(job)}
+              cleanJob={cleanJob(job)}
               delayedJob={promoteJob(job)}
             />
           </td>
