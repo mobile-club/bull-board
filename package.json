@@ -8,10 +8,8 @@
     "queue",
     "monitoring"
   ],
-  "author": "Vitor Capretz <capretzvitor@gmail.com>",
-  "contributors": [
-    "Erik Engervall <erik.engervall@gmail.com>, Alice Clavel <alice.claouis@gmail.com>"
-  ],
+  "author": "",
+  "contributors": [],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
