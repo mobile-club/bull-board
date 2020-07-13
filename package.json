@@ -1,6 +1,6 @@
 {
-  "name": "bull-board",
-  "description": "Bull queue UI for inspecting jobs",
+  "name": "@mobileclub/bull-board",
+  "description": "Fork from original https://github.com/vcapretz/bull-board.git - Bull queue UI for inspecting jobs",
   "version": "1.0.0-alpha.8",
   "keywords": [
     "bull",
@@ -10,14 +10,14 @@
   ],
   "author": "Vitor Capretz <capretzvitor@gmail.com>",
   "contributors": [
-    "Erik Engervall <erik.engervall@gmail.com>"
+    "Erik Engervall <erik.engervall@gmail.com>, Alice Clavel <alice.claouis@gmail.com>"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vcapretz/bull-board.git"
+    "url": "https://github.com/mobile-club/bull-board.git"
   },
   "bugs": {
     "url": "https://github.com/vcapretz/bull-board/issues"
