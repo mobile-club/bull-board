@@ -12,20 +12,25 @@ type MenuItemProps = {
   selected: boolean
 }
 
-const MenuItem = ({ status, count, selectStatus, selected, queue }: MenuItemProps) => {
-  // If the current status is already selected, it will close the tab
-  const selectedStatus = selected ? {} : { [queue.name]: status };
+const MenuItem = ({
+  status,
+  count,
+  selectStatus,
+  selected,
+  queue,
+}: MenuItemProps) => {
+  const selectedStatus = selected ? {} : { [queue.name]: status }
 
   return (
-  <div
-    className={`menu-item ${status} ${selected ? 'selected' : ''} ${
-      count === 0 ? 'off' : 'on'
-    }`}
-    onClick={() => selectStatus(selectedStatus)}
-  >
-    {status !== 'latest' && <b className="count">{count}</b>} {status}
-  </div>
-)
+    <div
+      className={`menu-item ${status} ${selected ? 'selected' : ''} ${
+        count === 0 ? 'off' : 'on'
+      }`}
+      onClick={() => selectStatus(selectedStatus)}
+    >
+      {status !== 'latest' && <b className="count">{count}</b>} {status}
+    </div>
+  )
 }
 const ACTIONABLE_STATUSES = ['failed', 'delayed', 'completed']
 
